@@ -71,9 +71,9 @@ contract Engine {
     }
 
     function percentageMultiplier() public view returns (uint) {
-        uint window = 35 * ((now - lastThaw)/thawingDelay);
-
-        return (200 - (5 * window));
+        uint window = (now.sub(lastThaw)).mul(35).div(thawingDelay);
+        uint startingPercentage = 200;
+        return (startingPercentage - (window.mul(5)));
     }
 
     /// @return NEC per ETH including premium
@@ -102,7 +102,7 @@ contract Engine {
         emit Burn(necAmount);
     }
 
-    /// @dev Get MLN from the registry
+    /// @dev Get NEC token
     function necToken()
         public
         view
