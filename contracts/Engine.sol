@@ -1,6 +1,6 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.5.0;
 
-import "@openzeppelin/contracts/math/SafeMath.sol"
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 // Loosely inspired by Melon Protocol Engine
 
@@ -17,12 +17,19 @@ import "@openzeppelin/contracts/math/SafeMath.sol"
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// TODO: add events for purchase/burn
+// TODO: track total burned by period
+// TODO: track total ether consumed over time
+// TODO: return next auction start time, check UI for other stats required.
+// Return next price change and time
+
+
 contract BurnableToken {
     function burnAndRetrieve(uint256 _tokensToBurn) public returns (bool success);
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success);
 }
 
-/// @notice Liquidity contract and token sink
+/// @notice NEC Auction Engine
 contract Engine {
     using SafeMath for uint256;
 
@@ -110,5 +117,32 @@ contract Engine {
     {
         return BurnableToken(necAddress);
     }
+
+
+
+    /// Useful read functions for UI
+    function getNextPriceChange() public view returns (
+        uint newPrice,
+        uint nextChangeTimeSeconds) {
+      newPrice = 0;
+      nextChangeTimeSeconds = 0;
+    }
+
+    function getNextAuction() public view returns (
+        uint nextStartTimeSeconds,
+        uint ethAvailable,
+        uint startingPrice
+        ) {
+
+    }
+
+    function getEthAuctioned(uint auctionNumber) public view returns (uint) {
+
+    }
+
+    function getNecBurned(uint auctionNumber) public view returns (uint) {
+
+    }
+
 
 }
