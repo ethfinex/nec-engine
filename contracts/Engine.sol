@@ -17,11 +17,8 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// TODO: add events for purchase/burn
 // TODO: track total burned by period
 // TODO: track total ether consumed over time
-// TODO: return next auction start time, check UI for other stats required.
-// Return next price change and time
 
 
 contract BurnableToken {
@@ -34,8 +31,9 @@ contract Engine {
     using SafeMath for uint256;
 
     event Thaw(uint amount);
-    event Burn(uint amount, uint price);
+    event Burn(uint amount, uint price, address burner);
     event FeesPaid(uint amount);
+    event AuctionClose(uint indexed auctionNumber, uint ethPurchased, uint necBurned);
 
     uint public constant NEC_DECIMALS = 18;
     address public necAddress;
@@ -50,7 +48,9 @@ contract Engine {
     uint private necPerEth; // Price at which the previous auction ended
     uint private lastSuccessfulSale;
 
-    // Params for auction price multiplier - can make customizable with an admin function
+    uint public auctionCounter;
+
+    // Params for auction price multiplier - TODO: can make customizable with an admin function
     uint private startingPercentage = 200;
     uint private numberSteps = 35;
 
@@ -58,7 +58,7 @@ contract Engine {
         lastThaw = block.timestamp;
         thawingDelay = _delay;
         necAddress = _token;
-        necPerEth = 1000;
+        necPerEth = uint(1000).mul(10 ** uint(NEC_DECIMALS));
     }
 
     function payFeesInEther() external payable {
@@ -84,6 +84,9 @@ contract Engine {
         liquidEther = liquidEther.add(frozenEther);
         emit Thaw(frozenEther);
         frozenEther = 0;
+
+        emit AuctionClose(auctionCounter, totalEtherConsumed, totalNecBurned);
+        auctionCounter++;
     }
 
     function getPriceWindow() public view returns (uint window) {
@@ -100,7 +103,7 @@ contract Engine {
     }
 
     function ethPayoutForNecAmount(uint necAmount) public view returns (uint) {
-        return necAmount.mul(enginePrice()).div(10 ** uint(NEC_DECIMALS));
+        return necAmount.mul(10 ** uint(NEC_DECIMALS)).div(enginePrice());
     }
 
     /// @notice NEC must be approved first
@@ -117,7 +120,7 @@ contract Engine {
         totalNecBurned = totalNecBurned.add(necAmount);
         msg.sender.transfer(ethToSend);
         necToken().burnAndRetrieve(necAmount);
-        emit Burn(necAmount, lastSuccessfulSale);
+        emit Burn(necAmount, lastSuccessfulSale, msg.sender);
     }
 
     /// @dev Get NEC token
@@ -130,31 +133,29 @@ contract Engine {
     }
 
 
+/// Useful read functions for UI
 
-    /// Useful read functions for UI
     function getNextPriceChange() public view returns (
         uint newPrice,
         uint nextChangeTimeSeconds )
     {
-      uint nextWindow = getPriceWindow() + 1;
-      nextChangeTimeSeconds = lastThaw + thawingDelay.mul(nextWindow).div(numberSteps);
-      newPrice = (startingPercentage.sub(nextWindow.mul(5)));
+        uint nextWindow = getPriceWindow() + 1;
+        nextChangeTimeSeconds = lastThaw + thawingDelay.mul(nextWindow).div(numberSteps);
+        newPrice = (startingPercentage.sub(nextWindow.mul(5)));
     }
 
     function getNextAuction() public view returns (
         uint nextStartTimeSeconds,
-        uint ethAvailable,
-        uint startingPrice
+        uint predictedEthAvailable,
+        uint predictedStartingPrice
         ) {
-
-    }
-
-    function getEthAuctioned(uint auctionNumber) public view returns (uint) {
-
-    }
-
-    function getNecBurned(uint auctionNumber) public view returns (uint) {
-
+        nextStartTimeSeconds = lastThaw + thawingDelay;
+        predictedEthAvailable = frozenEther;
+        if (lastSuccessfulSale > 0) {
+          predictedStartingPrice = lastSuccessfulSale * 2;
+        } else {
+          predictedStartingPrice = necPerEth.div(4);
+        }
     }
 
 
