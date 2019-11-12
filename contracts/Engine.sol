@@ -54,6 +54,7 @@ contract Engine {
         lastThaw = block.timestamp;
         thawingDelay = _delay;
         necAddress = _token;
+        necPerEth = 1000;
     }
 
     function payFeesInEther() external payable {
@@ -71,7 +72,11 @@ contract Engine {
         );
         require(frozenEther > 0, "No frozen ether to thaw");
         lastThaw = block.timestamp;
-        necPerEth = lastSuccessfulSale;
+        if (lastSuccessfulSale > 0) {
+          necPerEth = lastSuccessfulSale;
+        } else {
+          necPerEth = necPerEth.div(4);
+        }
         liquidEther = liquidEther.add(frozenEther);
         emit Thaw(frozenEther);
         frozenEther = 0;

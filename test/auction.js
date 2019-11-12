@@ -4,6 +4,7 @@ const { logGasUsage, snapshot, restore, forceMine, moveForwardTime } = require('
 
 const BN = web3.utils.BN
 const _1e18 = new BN('1000000000000000000')
+let initSnap
 
 contract('Engine', async (accounts) => {
 
@@ -23,6 +24,7 @@ contract('Engine', async (accounts) => {
 
         const balance = await nec.balanceOf(accounts[0])
         assert.equal(balance.toString(), _1e18.mul(new BN(1000)).toString(), "Tokens were not minted")
+        initSnap = await snapshot()
     })
 
     it("...should see the multiplier decreasing with time", async () => {
@@ -45,6 +47,14 @@ contract('Engine', async (accounts) => {
         logGasUsage('thawing ETH', thawtx)
         const multiplier = await engine.percentageMultiplier()
         assert.equal(multiplier.toString(), 200, "Did not reset to 200%")
+    })
+
+    it("...engine price should be defined and there should be liquid ether", async () => {
+
+        liquidEth = await engine.liquidEther.call()
+        assert.equal(liquidEth.toString(), _1e18.toString(), 'Thaw did trigger successfully')
+        enginePrice = await engine.enginePrice()
+        assert.equal(enginePrice.toString(), 2 * 1000 / 4, 'Engine price was not initialised')
     })
 
 
