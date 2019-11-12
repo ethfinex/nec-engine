@@ -29,9 +29,22 @@ contract('Engine', async (accounts) => {
 
         let multiplier = await engine.percentageMultiplier()
         assert.equal(multiplier.toString(), 200, "Did not start at 200%")
-        await moveForwardTime(35 * 60 + 1)
+        await moveForwardTime((35 * 60) + 1)
         multiplier = await engine.percentageMultiplier()
-        assert.equal(multiplier.toString(), 100, "Is not 100% half way through the period")
+        assert.equal(multiplier.toString(), 100, "Is not 100% at half way through the period")
+        await moveForwardTime(25 * 60)
+        multiplier = await engine.percentageMultiplier()
+        assert.equal(multiplier.toString(), 25, "Is not 25% at the end of the period")
+    })
+
+    it("...should reset multiplier if calling thaw", async () => {
+
+        feestx = await engine.payFeesInEther({from: accounts[0], value: _1e18})
+        logGasUsage('sending fees in ETH', feestx)
+        thawtx = await engine.thaw()
+        logGasUsage('thawing ETH', thawtx)
+        const multiplier = await engine.percentageMultiplier()
+        assert.equal(multiplier.toString(), 200, "Did not reset to 200%")
     })
 
 
