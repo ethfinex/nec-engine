@@ -4,7 +4,9 @@
   "description": "A smart-contract auction engine for burning Nectar tokens",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "truffle test",
+    "coverage": "npx solidity-coverage",
+    "compile": "truffle compile"
   },
   "repository": {
     "type": "git",
