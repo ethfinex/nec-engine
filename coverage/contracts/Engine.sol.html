@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/Engine.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> Engine.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">55.88% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>19/34</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">25% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>3/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">41.67% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">55.88% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>19/34</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity ^0.5.0;
+&nbsp;
+import "@openzeppelin/contracts/math/SafeMath.sol";
+&nbsp;
+// Loosely inspired by Melon Protocol Engine
+&nbsp;
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+&nbsp;
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+&nbsp;
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+&nbsp;
+// TODO: add events for purchase/burn
+// TODO: track total burned by period
+// TODO: track total ether consumed over time
+// TODO: return next auction start time, check UI for other stats required.
+// Return next price change and time
+&nbsp;
+&nbsp;
+contract BurnableToken {
+    function burnAndRetrieve(uint256 _tokensToBurn) public returns (bool success);
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success);
+}
+&nbsp;
+/// @notice NEC Auction Engine
+contract Engine {
+    using SafeMath for uint256;
+&nbsp;
+    event Thaw(uint amount);
+    event Burn(uint amount);
+    event FeesPaid(uint amount);
+&nbsp;
+    uint public constant NEC_DECIMALS = 18;
+    address public necAddress;
+&nbsp;
+    uint public frozenEther;
+    uint public liquidEther;
+    uint public lastThaw;
+    uint public thawingDelay;
+    uint public totalEtherConsumed;
+    uint public totalNecBurned;
+&nbsp;
+    uint private necPerEth; // Price at which the previous auction ended
+    uint private lastSuccessfulSale;
+&nbsp;
+    constructor(uint _delay, address _token) public {
+        lastThaw = block.timestamp;
+        thawingDelay = _delay;
+        necAddress = _token;
+        necPerEth = 1000;
+    }
+&nbsp;
+    function payFeesInEther() external payable {
+        totalEtherConsumed = totalEtherConsumed.add(msg.value);
+        frozenEther = frozenEther.add(msg.value);
+        emit FeesPaid(msg.value);
+    }
+&nbsp;
+    /// @notice Move frozen ether to liquid pool after delay
+    /// @dev Delay only restarts when this function is called
+    function thaw() external {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
+            block.timestamp &gt;= lastThaw.add(thawingDelay),
+            "Thawing delay has not passed"
+        );
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(frozenEther &gt; 0, "No frozen ether to thaw");
+        lastThaw = block.timestamp;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (lastSuccessfulSale &gt; 0) {
+<span class="cstat-no" title="statement not covered" >          necPerEth = lastSuccessfulSale</span>;
+        } else {
+          necPerEth = necPerEth.div(4);
+        }
+        liquidEther = liquidEther.add(frozenEther);
+        emit Thaw(frozenEther);
+        frozenEther = 0;
+    }
+&nbsp;
+    function percentageMultiplier() public view returns (uint) {
+        uint window = (now.sub(lastThaw)).mul(35).div(thawingDelay);
+        uint startingPercentage = 200;
+        return (startingPercentage - (window.mul(5)));
+    }
+&nbsp;
+    /// @return NEC per ETH including premium
+    function enginePrice() public view returns (uint) {
+        return necPerEth.mul(percentageMultiplier()).div(100);
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function ethPayoutForNecAmount(uint necAmount) public view returns (uint</span>) {
+<span class="cstat-no" title="statement not covered" >        return necAmount.mul(enginePrice()).div(10 ** uint(NEC_DECIMALS));</span>
+    }
+&nbsp;
+    /// @notice NEC must be approved first
+<span class="fstat-no" title="function not covered" >    function sellAndBurnNec(uint necAmount) externa</span>l {
+<span class="cstat-no" title="statement not covered" >        require(</span>
+            necToken().transferFrom(msg.sender, address(this), necAmount),
+            "NEC transferFrom failed"
+        );
+<span class="cstat-no" title="statement not covered" >        uint ethToSend = ethPayoutForNecAmount(necAmount);</span>
+<span class="cstat-no" title="statement not covered" >        lastSuccessfulSale = enginePrice()</span>;
+<span class="cstat-no" title="statement not covered" >        require(ethToSend &gt; 0, "No ether to pay out")</span>;
+<span class="cstat-no" title="statement not covered" >        require(liquidEther &gt;= ethToSend, "Not enough liquid ether to send")</span>;
+<span class="cstat-no" title="statement not covered" >        liquidEther = liquidEther.sub(ethToSend)</span>;
+<span class="cstat-no" title="statement not covered" >        totalNecBurned = totalNecBurned.add(necAmount)</span>;
+<span class="cstat-no" title="statement not covered" >        msg.sender.transfer(ethToSend)</span>;
+<span class="cstat-no" title="statement not covered" >        necToken().burnAndRetrieve(necAmount)</span>;
+<span class="cstat-no" title="statement not covered" >        emit Burn(necAmount);</span>
+    }
+&nbsp;
+    /// @dev Get NEC token
+<span class="fstat-no" title="function not covered" >    function necToken()</span>
+        public
+        view
+        returns (BurnableToken)
+    {
+<span class="cstat-no" title="statement not covered" >        return BurnableToken(necAddress);</span>
+    }
+&nbsp;
+&nbsp;
+&nbsp;
+    /// Useful read functions for UI
+<span class="fstat-no" title="function not covered" >    function getNextPriceChange() public view returns (</span>
+        uint newPrice,
+        uint nextChangeTimeSeconds) {
+<span class="cstat-no" title="statement not covered" >      newPrice = 0</span>;
+<span class="cstat-no" title="statement not covered" >      nextChangeTimeSeconds = 0</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getNextAuction() public view returns (</span>
+        uint nextStartTimeSeconds,
+        uint ethAvailable,
+        uint startingPrice
+        ) {
+&nbsp;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getEthAuctioned(uint auctionNumber) public view returns (uint</span>) {
+&nbsp;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getNecBurned(uint auctionNumber) public view returns (uint</span>) {
+&nbsp;
+    }
+&nbsp;
+&nbsp;
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Nov 12 2019 11:30:31 GMT+0000 (Greenwich Mean Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

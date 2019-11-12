@@ -18,5 +18,8 @@
   "homepage": "https://github.com/ethfinex/nec-engine#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^2.3.0"
+  },
+  "devDependencies": {
+    "solidity-coverage": "^0.6.7"
   }
 }
