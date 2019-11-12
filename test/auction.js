@@ -75,8 +75,18 @@ contract('Engine', async (accounts) => {
         logGasUsage('burning NEC', necburntx)
     })
 
+    it("...returns time and price of next price change", async () => {
+        const nextStep = await engine.getNextPriceChange()
+        assert.equal(nextStep.newPrice.toString(), 195, 'Not got next price change')
+
+        // TODO: Check next time of change
+        // const now = new BN(Date.now() / 1000)
+        // const nextExpectedChangeTime = now.add(new BN(60*60/35))
+        // assert.equal(nextStep.nextChangeTimeSeconds.toString(), nextExpectedChangeTime.toString(), 'Not got next price change')
+    })
+
     // TODO: Check burn event emitted, and include price in burn event
-    // Check ETH received as result of transaction called, and NEC balance reduced 
+    // Check ETH received as result of transaction called, and NEC balance reduced
 
 
 })

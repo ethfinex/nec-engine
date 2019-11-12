@@ -50,6 +50,10 @@ contract Engine {
     uint private necPerEth; // Price at which the previous auction ended
     uint private lastSuccessfulSale;
 
+    // Params for auction price multiplier - can make customizable with an admin function
+    uint private startingPercentage = 200;
+    uint private numberSteps = 35;
+
     constructor(uint _delay, address _token) public {
         lastThaw = block.timestamp;
         thawingDelay = _delay;
@@ -82,10 +86,12 @@ contract Engine {
         frozenEther = 0;
     }
 
+    function getPriceWindow() public view returns (uint window) {
+      window = (now.sub(lastThaw)).mul(numberSteps).div(thawingDelay);
+    }
+
     function percentageMultiplier() public view returns (uint) {
-        uint window = (now.sub(lastThaw)).mul(35).div(thawingDelay);
-        uint startingPercentage = 200;
-        return (startingPercentage - (window.mul(5)));
+        return (startingPercentage.sub(getPriceWindow().mul(5)));
     }
 
     /// @return NEC per ETH including premium
@@ -128,9 +134,11 @@ contract Engine {
     /// Useful read functions for UI
     function getNextPriceChange() public view returns (
         uint newPrice,
-        uint nextChangeTimeSeconds) {
-      newPrice = 0;
-      nextChangeTimeSeconds = 0;
+        uint nextChangeTimeSeconds )
+    {
+      uint nextWindow = getPriceWindow() + 1;
+      nextChangeTimeSeconds = lastThaw + thawingDelay.mul(nextWindow).div(numberSteps);
+      newPrice = (startingPercentage.sub(nextWindow.mul(5)));
     }
 
     function getNextAuction() public view returns (
