@@ -34,7 +34,7 @@ contract Engine {
     using SafeMath for uint256;
 
     event Thaw(uint amount);
-    event Burn(uint amount);
+    event Burn(uint amount, uint price);
     event FeesPaid(uint amount);
 
     uint public constant NEC_DECIMALS = 18;
@@ -111,7 +111,7 @@ contract Engine {
         totalNecBurned = totalNecBurned.add(necAmount);
         msg.sender.transfer(ethToSend);
         necToken().burnAndRetrieve(necAmount);
-        emit Burn(necAmount);
+        emit Burn(necAmount, lastSuccessfulSale);
     }
 
     /// @dev Get NEC token

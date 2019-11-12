@@ -57,5 +57,26 @@ contract('Engine', async (accounts) => {
         assert.equal(enginePrice.toString(), 2 * 1000 / 4, 'Engine price was not initialised')
     })
 
+    it("...frozen ether can be thawed and then purchased", async () => {
+        await restore(initSnap)
+        const multiplier = await engine.percentageMultiplier()
+        assert.equal(multiplier.toString(), 200, "Did not reset to 200%")
+        await engine.payFeesInEther({from: accounts[0], value: _1e18.mul(new BN(10))})
+        frozenEth = await engine.frozenEther.call()
+        assert.equal(frozenEth.toString(), _1e18.mul(new BN(10)).toString(), 'Funds not paid in successfully')
+        await moveForwardTime((60 * 60) + 1)
+        await engine.thaw()
+        liquidEth = await engine.liquidEther.call()
+        assert.equal(liquidEth.toString(), _1e18.mul(new BN(10)).toString(), 'Funds not thawed successfully')
+
+
+        await nec.approve(engine.address, _1e18)
+        necburntx = await engine.sellAndBurnNec(_1e18)
+        logGasUsage('burning NEC', necburntx)
+    })
+
+    // TODO: Check burn event emitted, and include price in burn event
+    // Check ETH received as result of transaction called, and NEC balance reduced 
+
 
 })

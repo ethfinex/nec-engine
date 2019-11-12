@@ -20,13 +20,13 @@ async function snapshot () {
   })
 }
 
-async function restore (snapshotId) {
+async function restore (snapshot) {
   return new Promise((resolve, reject) => {
     web3.currentProvider.send({
       jsonrpc: '2.0',
       method: 'evm_revert',
-      params: [shapshotId],
-      id: Date.now()
+      params: [snapshot.result],
+      id: snapshot.id
     }, (err, res) => {
       return err ? reject(err) : resolve(res)
     })
