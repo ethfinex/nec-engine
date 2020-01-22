@@ -18,8 +18,6 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // TODO: track total burned by period
-// TODO: track total ether consumed over time
-
 
 contract BurnableToken {
     function burnAndRetrieve(uint256 _tokensToBurn) public returns (bool success);
@@ -44,6 +42,7 @@ contract Engine {
     uint public thawingDelay;
     uint public totalEtherConsumed;
     uint public totalNecBurned;
+    uint public thisAuctionTotalEther;
 
     uint private necPerEth; // Price at which the previous auction ended
     uint private lastSuccessfulSale;
@@ -82,8 +81,10 @@ contract Engine {
           necPerEth = necPerEth.div(4);
         }
         liquidEther = liquidEther.add(frozenEther);
+        thisAuctionTotalEther = liquidEther;
         emit Thaw(frozenEther);
         frozenEther = 0;
+
 
         emit AuctionClose(auctionCounter, totalEtherConsumed, totalNecBurned);
         auctionCounter++;
@@ -156,6 +157,21 @@ contract Engine {
         } else {
           predictedStartingPrice = necPerEth.div(4);
         }
+    }
+
+    function getCurrentAuction() public view returns (
+        uint startTimeSeconds,
+        uint nextPriceChangeSeconds,
+        uint currentPrice,
+        uint nextPrice,
+        uint initialEthAvailable,
+        uint remainingEthAvailable
+        ) {
+        startTimeSeconds = lastThaw;
+        currentPrice = enginePrice();
+        ( nextPrice, nextPriceChangeSeconds) = getNextPriceChange();
+        initialEthAvailable = thisAuctionTotalEther;
+        remainingEthAvailable = liquidEther;
     }
 
 
