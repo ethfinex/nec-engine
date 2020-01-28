@@ -68,7 +68,7 @@ contract Engine {
 
     /// @notice Move frozen ether to liquid pool after delay
     /// @dev Delay only restarts when this function is called
-    function thaw() external {
+    function thaw() public {
         require(
             block.timestamp >= lastThaw.add(thawingDelay),
             "Thawing delay has not passed"
@@ -109,6 +109,10 @@ contract Engine {
 
     /// @notice NEC must be approved first
     function sellAndBurnNec(uint necAmount) external {
+        if (block.timestamp >= lastThaw.add(thawingDelay)) {
+          thaw();
+          return;
+        }
         require(
             necToken().transferFrom(msg.sender, address(this), necAmount),
             "NEC transferFrom failed"
@@ -137,12 +141,12 @@ contract Engine {
 /// Useful read functions for UI
 
     function getNextPriceChange() public view returns (
-        uint newPrice,
+        uint newPriceMultiplier,
         uint nextChangeTimeSeconds )
     {
         uint nextWindow = getPriceWindow() + 1;
         nextChangeTimeSeconds = lastThaw + thawingDelay.mul(nextWindow).div(numberSteps);
-        newPrice = (startingPercentage.sub(nextWindow.mul(5)));
+        newPriceMultiplier = (startingPercentage.sub(nextWindow.mul(5)));
     }
 
     function getNextAuction() public view returns (
@@ -160,6 +164,7 @@ contract Engine {
     }
 
     function getCurrentAuction() public view returns (
+        uint auctionNumber,
         uint startTimeSeconds,
         uint nextPriceChangeSeconds,
         uint currentPrice,
@@ -167,9 +172,12 @@ contract Engine {
         uint initialEthAvailable,
         uint remainingEthAvailable
         ) {
+        auctionNumber = auctionCounter;
         startTimeSeconds = lastThaw;
         currentPrice = enginePrice();
-        ( nextPrice, nextPriceChangeSeconds) = getNextPriceChange();
+        uint nextPriceMultiplier;
+        (nextPriceMultiplier, nextPriceChangeSeconds) = getNextPriceChange();
+        nextPrice = currentPrice.mul(nextPriceMultiplier).div(percentageMultiplier());
         initialEthAvailable = thisAuctionTotalEther;
         remainingEthAvailable = liquidEther;
     }

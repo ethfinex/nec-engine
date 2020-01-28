@@ -3,6 +3,12 @@ function logGasUsage (subject, transactionOrReceipt) {
   console.log('    Gas costs for ' + subject + ': ' + receipt.gasUsed)
 }
 
+async function getTransactionCost (transaction) {
+  const receipt = transaction.receipt
+  const tx = await web3.eth.getTransaction(transaction.tx)
+  return tx.gasPrice * receipt.gasUsed
+}
+
 async function blockTime () {
   const block = await web3.eth.getBlock('latest')
   return block.timestamp
@@ -71,6 +77,7 @@ async function moveForwardTime (time) {
 
 module.exports = {
     logGasUsage,
+    getTransactionCost,
     blockTime,
     snapshot,
     restore,
