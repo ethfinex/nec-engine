@@ -54,7 +54,7 @@ contract Engine {
     uint private numberSteps = 35;
 
     constructor(uint _delay, address _token) public {
-        lastThaw = block.timestamp;
+        lastThaw = 0;
         thawingDelay = _delay;
         necAddress = _token;
         necPerEth = uint(1000).mul(10 ** uint(NEC_DECIMALS));
