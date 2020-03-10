@@ -17,8 +17,6 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// TODO: track total burned by period
-
 contract BurnableToken {
     function burnAndRetrieve(uint256 _tokensToBurn) public returns (bool success);
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success);
@@ -57,7 +55,7 @@ contract Engine {
         lastThaw = 0;
         thawingDelay = _delay;
         necAddress = _token;
-        necPerEth = uint(1000).mul(10 ** uint(NEC_DECIMALS));
+        necPerEth = uint(20000).mul(10 ** uint(NEC_DECIMALS));
     }
 
     function payFeesInEther() external payable {
@@ -84,7 +82,7 @@ contract Engine {
         thisAuctionTotalEther = liquidEther;
         emit Thaw(frozenEther);
         frozenEther = 0;
-
+        lastSuccessfulSale = 0;
 
         emit AuctionClose(auctionCounter, totalEtherConsumed, totalNecBurned);
         auctionCounter++;
@@ -118,9 +116,11 @@ contract Engine {
             "NEC transferFrom failed"
         );
         uint ethToSend = ethPayoutForNecAmount(necAmount);
-        lastSuccessfulSale = enginePrice();
         require(ethToSend > 0, "No ether to pay out");
         require(liquidEther >= ethToSend, "Not enough liquid ether to send");
+        if (liquidEther > 0.1 ether) {
+            lastSuccessfulSale = enginePrice();
+        }
         liquidEther = liquidEther.sub(ethToSend);
         totalNecBurned = totalNecBurned.add(necAmount);
         msg.sender.transfer(ethToSend);
